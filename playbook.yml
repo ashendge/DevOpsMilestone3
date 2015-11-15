@@ -1,0 +1,33 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+    - name: Install nodejs on all servers
+      apt: pkg=nodejs state=installed update_cache=true
+
+    - name: Install npm on all hosts
+      apt: pkg=npm state=installed update_cache=true
+
+    - name: Install git on all hosts
+      apt: pkg=git state=installed update_cache=true
+
+    - name: Link nodejs to node
+      shell: sudo ln -s /usr/bin/nodejs /usr/bin/node
+
+    - name: Create repository.git directory remote
+      file: path=/home/ubuntu/repository.git state=directory
+
+    - name: Create production directory on remote
+      file: path=/home/ubuntu/production state=directory
+
+    - name: Create a bare repository in repository.git
+      command: git init --bare /home/ubuntu/repository.git
+
+    - name: Set ROOT environment variable
+      lineinfile: dest=/etc/environment line="ROOT=\"/home/ubuntu\""
+
+    - name: Set ROOT in bashrc
+      lineinfile: dest=/home/ubuntu/.bashrc line="export ROOT=/home/ubuntu"
+
+    - name: Copy the post-receive hook into the repository
+      copy: src=post-receive dest=/home/ubuntu/repository.git/hooks/post-receive
