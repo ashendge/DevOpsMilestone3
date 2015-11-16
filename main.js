@@ -13,7 +13,6 @@ var proxy  = httpProxy.createProxyServer()
 var client = redis.createClient(6379, '127.0.0.1', {})
 
 
-
 app.use(function(req, res, next) 
 {
 
