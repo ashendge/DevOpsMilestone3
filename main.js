@@ -8,7 +8,6 @@ var app_2 = express()
 var http = require('http')
 var httpProxy = require('http-proxy')
 var proxy  = httpProxy.createProxyServer()
-
 // REDIS
 var client = redis.createClient(6379, '127.0.0.1', {})
 
