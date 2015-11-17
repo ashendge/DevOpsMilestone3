@@ -20,5 +20,8 @@
   "dependencies": {
     "http-proxy": "^1.12.0",
     "mocha": "^2.3.4"
+  },
+  "scripts": {
+	"ci-test": "./node_modules/.bin/mocha --reporter spec ./tests/test.js"
   }
 }

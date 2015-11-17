@@ -23,7 +23,9 @@ var infrastructure =
     server.listen(8080);
 
     // Launch green slice
+
     exec('forever --watch start main3000.js', function(err, out, code) 
+
     {
       console.log("attempting to launch green slice");
       if (err instanceof Error)
