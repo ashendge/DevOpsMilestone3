@@ -22,29 +22,30 @@ var infrastructure =
     });
     server.listen(8080);
 
-    // // Launch green slice
-    // exec('forever --watch start main.js 9090', function(err, out, code) 
-    // {
-    //   console.log("attempting to launch blue slice");
-    //   if (err instanceof Error)
-    //         throw err;
-    //   if( err )
-    //   {
-    //     console.error( err );
-    //   }
-    // });
-
-    // Launch blue slice
-    exec('forever -w start main.js 3000', function(err, out, code) 
+    // Launch green slice
+    exec('forever --watch start main3000.js 3000', function(err, out, code) 
     {
       console.log("attempting to launch green slice");
       if (err instanceof Error)
-        throw err;
+            throw err;
       if( err )
       {
         console.error( err );
       }
     });
+
+    // Launch blue slice
+    // exec('forever -w start main.js 3000', function(err, out, code) 
+    // {
+    //   console.log("attempting to launch green slice");
+
+    //   if (err instanceof Error)
+    //     throw err;
+    //   if( err )
+    //   {
+    //     console.error( err );
+    //   }
+    // });
 
 //setTimeout
 //var options = 
