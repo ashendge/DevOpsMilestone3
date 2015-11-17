@@ -1,4 +1,4 @@
- var redis = require('redis')
+var redis = require('redis')
 var multer  = require('multer')
 var express = require('express')
 var fs      = require('fs')
