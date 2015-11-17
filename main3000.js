@@ -129,5 +129,5 @@ function makeServer() {
 	});
 	return server;
 }
-makeServer();
 module.exports = makeServer;
+//module.exports = server;
