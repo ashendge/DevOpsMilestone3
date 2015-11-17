@@ -1,3 +1,4 @@
 node_modules
 .gitignore
 npm-debug.log
+*.swp
