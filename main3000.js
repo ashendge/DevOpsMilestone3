@@ -130,4 +130,4 @@ function makeServer() {
 	return server;
 }
 module.exports = makeServer;
-//module.exports = server;
+makeServer();
