@@ -127,6 +127,29 @@ function makeServer() {
 			"<h4>State: State of North Carolina </h4>";
 			res.send(myText);
 	});
+
+
+	app.get('/new', function(req, res) {
+
+		client.get("flag",function(err, flag_value){
+
+			if(flag_value === 'true'){
+				var myText = "<h3>The new Feature Has been Implemented. Testtng the Beta feature</h3>";
+				res.send(myText);
+			}
+			else
+			{
+				var myText = "<h3>Sorry, Bad request. This page is not yet functional</h3>";
+				res.send(myText);
+ 			 }
+	
+		});
+	
+	});
+
+
+
+
 	return server;
 }
 module.exports = makeServer;
