@@ -5,3 +5,4 @@ npm-debug.log
 passwd
 acc_sid
 auth_token
+stress.c
