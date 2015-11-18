@@ -1,27 +1,33 @@
 var http = require('http');
-var request = require('request');
 var os = require('os');
 var nodemailer = require('nodemailer');
 var fs = require('fs');
 
-var passwd = fs.readFileSync('passwd', 'utf8');
+var accSID = fs.readFileSync('acc_sid', 'utf8').trim();
+var authToken = fs.readFileSync('auth_token', 'utf8').trim();
 
-var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: 'devops591@gmail.com',
-        pass: passwd
-    }
-});
+accSID.slice(0, accSID.length - 1);
+authToken.slice(0, authToken.length - 1);
 
-var mailOptions = {
-    from: '<devops591@gmail.com>', // sender address
-    to: "shendge.anurag@gmail.com," + 
-	"aneeshkher@gmail.com", // list of receivers
-    subject: 'ALERT', // Subject line
-    text: 'You are receiving this email because of an alert on your system',
-    html: '<b>Alert notice</b>' // html body
-};
+var twiClient = require('twilio')(accSID, authToken);
+console.log(twiClient);
+
+//var transporter = nodemailer.createTransport({
+//    service: 'Gmail',
+//    auth: {
+//        user: 'devops591@gmail.com',
+//        pass: passwd
+//    }
+//});
+//
+//var mailOptions = {
+//    from: '<devops591@gmail.com>', // sender address
+//    to: "shendge.anurag@gmail.com," + 
+//	"aneeshkher@gmail.com", // list of receivers
+//    subject: 'ALERT', // Subject line
+//    text: 'You are receiving this email because of an alert on your system',
+//    html: '<b>Alert notice</b>' // html body
+//};
 
 
 function memoryLoad()
@@ -110,15 +116,25 @@ setInterval( function ()
 	//cpuAverage();
 	//console.log(os.loadavg());
 	var memLoad = memoryLoad();
-	if (memLoad > 60) {
+	if (memLoad > 70) {
 		console.log("ALERT! EXCESS MEMORY USAGE", memLoad, "%");
 		if (flag == 0) {	
-			transporter.sendMail(mailOptions, function(error, info) {
-    			if(error) {
-        			return console.log(error);
-    			}
-    				//console.log('Message sent: ' + info.response);
+			//transporter.sendMail(mailOptions, function(error, info) {
+    		//	if(error) {
+        	//		return console.log(error);
+    		//	}
+    		//		//console.log('Message sent: ' + info.response);
 
+			//});
+			twiClient.sendMessage({
+			    body: "EXCESS MEMORY USAGE",
+			    to: "+12526218047",
+			    from: "+13343844530"
+			}, function(err, message) {
+			    //process.stdout.write(message.sid);
+				console.log(err);
+				console.log("-----");
+				//console.log(message);
 			});
 			flag = 1;
 		}
