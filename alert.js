@@ -56,7 +56,7 @@ setInterval( function ()
 				console.log("ALERT! Excess memory usage. Notified Ops Team.");
 			}
 		});
-		client.set("proxy_flag", 0);
+		//client.set("proxy_flag", 0);
 	} 
 
 	if (cpuLoad > 30) {
