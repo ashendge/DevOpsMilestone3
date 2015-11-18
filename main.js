@@ -1,155 +1,129 @@
+var http = require('http');
+var request = require('request');
+var os = require('os');
+var nodemailer = require('nodemailer');
+var fs = require('fs');
 
-var redis = require('redis')
-var multer  = require('multer')
-var express = require('express')
-var fs      = require('fs')
-var app = express()
-var app_2 = express()
+var passwd = fs.readFileSync('passwd', 'utf8');
+
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'devops591@gmail.com',
+        pass: passwd
+    }
+});
+
+var mailOptions = {
+    from: '<devops591@gmail.com>', // sender address
+    to: "shendge.anurag@gmail.com," + 
+	"aneeshkher@gmail.com", // list of receivers
+    subject: 'ALERT', // Subject line
+    text: 'You are receiving this email because of an alert on your system',
+    html: '<b>Alert notice</b>' // html body
+};
 
 
-var http = require('http')
-var httpProxy = require('http-proxy')
-var proxy  = httpProxy.createProxyServer()
-// REDIS
-var client = redis.createClient(6379, '127.0.0.1', {})
-
-app.use(function(req, res, next) 
+function memoryLoad()
 {
-
-	var visitedSite = (req.originalUrl); //  this should be localhost/
-
-	client.lpush('mylist',visitedSite);
-	client.ltrim('mylist',0,4)
-	next(); 
-	// Passing the request to the next handler in the stack.
-
-});
-
-
-app.get('/',function(req,res){
-
-	res.send("<h1>Hello World</h1>")
-
-});
-
-app.get('/recent',function(req,res){
-
-		client.lrange('mylist',0,4,function(err,list){
-
-
-	res.writeHead(200, {'content-type':'text/html'});
-
-		for (var i = 0; i <= list.length - 1; i++) {
-			var a = list[i]
-			res.write("<h1>http://localhost:"+ a+"</h1>");
-		};	
-		
-		
-
-		res.end()
-
-		//res.send(list);
-	});
-	
-});
-
-
-/**********************************An EXPIRING CACHE************************************/
-app.get('/set',function(req,res){
-
-	var message = "this message will self-destruct in 10 seconds";
-	client.set("key",message);
-	client.expire('key',10);
-	res.send("<h1>Message set</h1>");
-
-});
-
-app.get('/get',function(req,res){
-
-	var val;
-	client.get('key',function(err,value){
-		val = value;
-		if(val != null)
-		res.send("<h1>"+val+"</h1>");
-	else{
-			res.end();
-	}
-});
-
-});
-
-
-/**********************************An EXPIRING CACHE************************************/
-
-
-
-app.post('/upload',[ multer({ dest: './uploads/'}), function(req,res){
-
-   //console.log(req.body) // form fields
-   //console.log(req.files) // form files
-
-   if( req.files.image )
-   {
-	   fs.readFile( req.files.image.path, function (err, data) {
-	//  		if (err) throw err;
-	  		var img = new Buffer(data).toString('base64');
-		//console.log(img);
-		client.lpush('ImageList_1',img);
-	});
-
+	var total = os.totalmem();
+	var load = os.totalmem() - os.freemem();
+	var percentage = (load/total)*100;
+	return percentage;
 }
 
-   res.status(204).end()
-}]);
+function getProcessorUsage () {
+	var cpus = os.cpus();
+	for (var i = 0; i < cpus.length; i++) {
+		console.log("CPU Model: ", cpus[i].model);
+		var times = cpus[i].times;
+		for (var time in cpus[i].times) {
+			console.log(time,": ",cpus[i].times[time]/100000);
+		}
+	}
+}
 
-app.get('/meow', function(req, res) {
+// Create function to get CPU information
+function cpuTicksAcrossCores() 
+{
+  //Initialise sum of idle and time of cores and fetch CPU info
+  var totalIdle = 0, totalTick = 0;
+  var cpus = os.cpus();
+ 
+  //Loop through CPU cores
+  for(var i = 0, len = cpus.length; i < len; i++) 
+  {
+		//Select CPU core
+		var cpu = cpus[i];
+		//Total up the time in the cores tick
+		for(type in cpu.times) 
+		{
+			totalTick += cpu.times[type];
+		}     
+		//Total up the idle time of the core
+		totalIdle += cpu.times.idle;
+  }
+ 
+  //Return the average Idle and Tick times
+  return {idle: totalIdle / cpus.length,  total: totalTick / cpus.length};
+}
 
-		client.lpop('ImageList_1',function(err,imageData){
-		res.writeHead(200, {'content-type':'text/html'});
-		res.write("<h1>\n<img src='data:image/png;base64,"+imageData+"'/>");
-		res.end();
-	
+var startMeasure = cpuTicksAcrossCores();
+
+function cpuAverage()
+{
+	var endMeasure = cpuTicksAcrossCores(); 
+ 
+	//Calculate the difference in idle and total time between the measures
+	var idleDifference = endMeasure.idle - startMeasure.idle;
+	var totalDifference = endMeasure.total - startMeasure.total;
+ 
+	//Calculate the average percentage CPU usage
+	//var percentage = ((totalDifference - idleDifference)/totalDifference) * 100;
+	var total = endMeasure.total;
+	var idle = endMeasure.idle;
+
+	var percentage = ((total - idle) / total) * 100;
+	console.log("Usage: ", percentage);
+	return idleDifference;
+}
+
+function measureLatenancy(server)
+{
+	var options = 
+	{
+		url: 'http://localhost' + ":" + server.address().port,
+	};
+	request(options, function (error, res, body) 
+	{
+		server.latency = undefined;
 	});
-		
-});
 
-// HTTP SERVER
-var server_3;
-var server_2;
-var server_1;
+	return server.latency;
+}
 
 
-server_1 = app.listen(3000, function () {
-
-  var host = server_1.address().address
-  var port = server_1.address().port
-  console.log('Homework app listening at http://localhost%s:%s', host, port)
-
-});
-
-
-server_2 = app.listen(3001,function(){
-
-	var host = server_2.address().address
-	var port = server_2.address().port
-	console.log('Second server instance of the homework app listening at http://localhost%s:%s', host, port)
-
-});
-
-
-//client.rpush(['port_list_1',3000,3001],function(){});
+var flag = 0;
+setInterval( function () 
+{
 	
-var server = http.createServer(function(req, res) {
+	//cpuAverage();
+	//console.log(os.loadavg());
+	var memLoad = memoryLoad();
+	if (memLoad > 60) {
+		console.log("ALERT! EXCESS MEMORY USAGE", memLoad, "%");
+		if (flag == 0) {	
+			transporter.sendMail(mailOptions, function(error, info) {
+    			if(error) {
+        			return console.log(error);
+    			}
+    				//console.log('Message sent: ' + info.response);
 
-			//console.log(client);
-			//console.log()
-			client.rpoplpush('port_list_1','port_list_1',function(err,portVal){
+			});
+			flag = 1;
+		}
+	}
+	//getProcessorUsage();
 
-			console.log("Routing through POR # "+portVal);	
-			proxy.web(req, res, { target: 'http://localhost:'+ portVal});
+}, 2000);
 
-		});
-	  
-});
-
-server.listen(80);

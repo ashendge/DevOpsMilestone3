@@ -4,7 +4,7 @@
   "description": "redis playground",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "ci-test": "./node_modules/.bin/mocha --reporter spec ./tests/test.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,13 +15,12 @@
     "mocha": "^2.3.4",
     "multer": "^0.1.8",
     "redis": "^0.12.1",
-    "supertest": "^1.1.0"
+    "supertest": "^1.1.0",
+    "fs": "0.0.2",
+    "nodemailer": "~1.10.0"
   },
   "dependencies": {
     "http-proxy": "^1.12.0",
     "mocha": "^2.3.4"
-  },
-  "scripts": {
-	"ci-test": "./node_modules/.bin/mocha --reporter spec ./tests/test.js"
   }
 }
