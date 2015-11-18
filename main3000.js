@@ -68,7 +68,7 @@ function makeServer() {
 	});
 	
 	app.get('/', function(req, res) {
-		res.send('<h1>Hello forever on port 3000. Congratulations!</h1>');
+		res.send('<h1>Serving from CANARY Server on port 3000. Congratulations!</h1>');
 	});
 	
 	app.get('/set', function(req, res) {
@@ -93,7 +93,7 @@ function makeServer() {
 	
 	app.get('/aneesh', function(req, res) {
 		var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-		var myText = "<h3>You have reached a special URL: " + req.url + " on port 3000. Congratulations! You have won $1,000,000</h3>";
+		var myText = "<h3>(CANARY)You have reached a special URL: " + req.url + " on port 3000. Congratulations! You have won $1,000,000</h3>";
 		res.send(myText);
 	});
 	
