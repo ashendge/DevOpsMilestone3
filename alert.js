@@ -38,7 +38,7 @@ setInterval( function ()
 	console.log("Memory: ", memLoad);
 	console.log("CPU: ", cpuLoad);
 
-	if (memLoad > 70) {
+	if (memLoad > 85) {
 		client.get("memFlag", function(err, value) {
 			if (value == 0) {
 				twiClient.sendMessage({

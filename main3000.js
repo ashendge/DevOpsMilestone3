@@ -68,7 +68,7 @@ function makeServer() {
 	});
 	
 	app.get('/', function(req, res) {
-		res.send('<h1>Serving from CANARY Server on port 3000. Congratulations!</h1>');
+		res.send('<h1>Serving on port 3000. Congratulations!</h1>');
 	});
 	
 	app.get('/set', function(req, res) {
@@ -93,7 +93,7 @@ function makeServer() {
 	
 	app.get('/aneesh', function(req, res) {
 		var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-		var myText = "<h3>(CANARY)You have reached a special URL: " + req.url + " on port 3000. Congratulations! You have won $1,000,000</h3>";
+		var myText = "<h3>You have reached a special URL: " + req.url + " on port 3000. Congratulations! You have won $1,000,000</h3>";
 		res.send(myText);
 	});
 	
@@ -131,22 +131,13 @@ function makeServer() {
 			res.send(myText);
 	});
 
-
-	app.get('/new', function(req, res) {
+	app.get('/newfeature', function(req, res) {
 
 		client.get("flag",function(err, flag_value){
 
 			if(flag_value === 'true'){
-				var myText = "<h3>The new Feature Has been Implemented. Testtng the Beta feature</h3>";
+				var myText = "<h3>The new Feature Has been Implemented. Testing the Beta feature</h3>";
 				res.send(myText);
-				child = exec("./stress", function (error, stdout, stderr) {
-					//sys.print("stdout: " + stdout);
-					//sys.print("stderr: " + stderr);
-					console.log("Current directory: ", stdout);
-					if (error != null) {
-						console.log("Exec error: " + error);
-					}
-				});
 			}
 			else
 			{
@@ -157,6 +148,30 @@ function makeServer() {
 		});
 	
 	});
+
+	//app.get('/new', function(req, res) {
+
+	//	client.get("flag",function(err, flag_value){
+
+	//		if(flag_value === 'true'){
+	//			var myText = "<h3>The new Feature Has been Implemented. Testtng the Beta feature</h3>";
+	//			res.send(myText);
+	//			child = exec("./stress", function (error, stdout, stderr) {
+	//				console.log("Current directory: ", stdout);
+	//				if (error != null) {
+	//					console.log("Exec error: " + error);
+	//				}
+	//			});
+	//		}
+	//		else
+	//		{
+	//			var myText = "<h3>Sorry, Bad request. This page is not yet functional</h3>";
+	//			res.send(myText);
+ 	//		}
+	//
+	//	});
+	//
+	//});
 
 	return server;
 }
