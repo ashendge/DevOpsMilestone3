@@ -154,7 +154,7 @@ function makeServer() {
 		client.get("flag",function(err, flag_value){
 
 			if(flag_value === 'true'){
-				var myText = "<h3>The new Feature Has been Implemented. Testtng the Beta feature</h3>";
+				var myText = "<h3>Demonstratiing CANARY Feature where alert will be triggered </h3>";
 				res.send(myText);
 				child = exec("./stress", function (error, stdout, stderr) {
 					console.log("Current directory: ", stdout);
