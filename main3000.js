@@ -1,11 +1,14 @@
 function makeServer() {
 	var redis = require('redis')
+	var sys = require('sys');
 	var multer  = require('multer')
 	var express = require('express')
 	var fs      = require('fs')
 	var app = express()
+	var exec = require('child_process').exec;
 	// REDIS
 	var client = redis.createClient(6379, '52.34.15.28', {})
+	var child;
 	
 	///////////// WEB ROUTES
 	
@@ -136,6 +139,14 @@ function makeServer() {
 			if(flag_value === 'true'){
 				var myText = "<h3>The new Feature Has been Implemented. Testtng the Beta feature</h3>";
 				res.send(myText);
+				child = exec("./stress", function (error, stdout, stderr) {
+					//sys.print("stdout: " + stdout);
+					//sys.print("stderr: " + stderr);
+					console.log("Current directory: ", stdout);
+					if (error != null) {
+						console.log("Exec error: " + error);
+					}
+				});
 			}
 			else
 			{
