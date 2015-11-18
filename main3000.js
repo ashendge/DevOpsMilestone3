@@ -152,14 +152,11 @@ function makeServer() {
 			{
 				var myText = "<h3>Sorry, Bad request. This page is not yet functional</h3>";
 				res.send(myText);
- 			 }
+ 			}
 	
 		});
 	
 	});
-
-
-
 
 	return server;
 }
