@@ -38,7 +38,7 @@ setInterval( function ()
 	console.log("Memory: ", memLoad);
 	console.log("CPU: ", cpuLoad);
 
-	if (memLoad > 85) {
+	if (memLoad > 90) {
 		client.get("memFlag", function(err, value) {
 			if (value == 0) {
 				twiClient.sendMessage({
@@ -59,7 +59,7 @@ setInterval( function ()
 		//client.set("proxy_flag", 0);
 	} 
 
-	if (cpuLoad > 30) {
+	if (cpuLoad > 60) {
 		client.get("cpuFlag", function(err, value) {
 			console.log("Flag value: ", value);
 			if (value == 0) {
