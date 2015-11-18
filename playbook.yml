@@ -14,20 +14,32 @@
     - name: Link nodejs to node
       shell: sudo ln -s /usr/bin/nodejs /usr/bin/node
 
-    - name: Create repository.git directory remote
-      file: path=/home/ubuntu/repository.git state=directory
-
-    - name: Create production directory on remote
-      file: path=/home/ubuntu/production state=directory
-
-    - name: Create a bare repository in repository.git
-      command: git init --bare /home/ubuntu/repository.git
-
     - name: Set ROOT environment variable
       lineinfile: dest=/etc/environment line="ROOT=\"/home/ubuntu\""
 
     - name: Set ROOT in bashrc
       lineinfile: dest=/home/ubuntu/.bashrc line="export ROOT=/home/ubuntu"
 
+    - name: Install forever globally
+      shell: sudo npm install -g forever
+
+- hosts: all
+  sudo: no
+  tasks:
+    - name: Create repository.git directory remote
+      file: path=/home/ubuntu/repository.git state=directory mode="u=rwx,g=wxr,o=rx"
+
+    - name: Create production directory on remote
+      file: path=/home/ubuntu/production state=directory mode="u=rwx,g=wxr,o=rx"
+
+    - name: Create a bare repository in repository.git
+      command: git init --bare /home/ubuntu/repository.git
+
     - name: Copy the post-receive hook into the repository
-      copy: src=post-receive dest=/home/ubuntu/repository.git/hooks/post-receive
+      copy: src=post-receive dest=/home/ubuntu/repository.git/hooks/post-receive mode="u=rwx,g=wxr,o=rx"
+
+    - name: Copy the twilio sid key to the machine
+      copy: src=acc_sid dest=/home/ubuntu/production/acc_sid mode="u=rwx,g=rwx,o=rx"
+
+    - name: Copy the twilio auth_token to the machine
+      copy: src=auth_token dest=/home/ubuntu/production/auth_token mode="u=rwx,g=rwx,o=rx"
