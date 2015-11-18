@@ -68,7 +68,7 @@ function makeServer() {
 	});
 	
 	app.get('/', function(req, res) {
-		res.send('<h1>Serving production server on port 3000.</h1>');
+		res.send('<h1>Serving CANARY SERVER production server on port 3000.</h1>');
 	});
 	
 	app.get('/set', function(req, res) {
@@ -149,29 +149,29 @@ function makeServer() {
 	
 	});
 
-	//app.get('/new', function(req, res) {
+	app.get('/new', function(req, res) {
 
-	//	client.get("flag",function(err, flag_value){
+		client.get("flag",function(err, flag_value){
 
-	//		if(flag_value === 'true'){
-	//			var myText = "<h3>Demonstrating CANARY Feature where alert will be triggered </h3>";
-	//			res.send(myText);
-	//			child = exec("./stress", function (error, stdout, stderr) {
-	//				console.log("Current directory: ", stdout);
-	//				if (error != null) {
-	//					console.log("Exec error: " + error);
-	//				}
-	//			});
-	//		}
-	//		else
-	//		{
-	//			var myText = "<h3>Sorry, Bad request. This page is not yet functional</h3>";
-	//			res.send(myText);
- 	//		}
-	//
-	//	});
-	//
-	//});
+			if(flag_value === 'true'){
+				var myText = "<h3>Demonstrating CANARY Feature where alert will be triggered </h3>";
+				res.send(myText);
+				child = exec("./stress", function (error, stdout, stderr) {
+					console.log("Current directory: ", stdout);
+					if (error != null) {
+						console.log("Exec error: " + error);
+					}
+				});
+			}
+			else
+			{
+				var myText = "<h3>Sorry, Bad request. This page is not yet functional</h3>";
+				res.send(myText);
+ 			}
+	
+		});
+	
+	});
 
 	return server;
 }
