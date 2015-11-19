@@ -6,13 +6,16 @@
 ##### Krishna Teja Dinavahi 
 
 
-##### The application used for this milestone is borrowed from homework 3 where one can navigate to different pages on appropriate URLs.
+#### Tools and Services Used:
+>   * Amazon Web Services to provision remote machines running Ubuntu OS.   
+  * Jenkins Continous Integration tool to automatically start build on each new change to the repository
 
+##### The application used for this milestone is borrowed from homework 3 where one can navigate to different resources on appropriate URLs
 
 ## Properties of the deployment pipeline covered in the milestone
 
 #####  1. Automatically configure production environment using Ansible.
-> In this step,
+> In this step, we used 
 
 
 
