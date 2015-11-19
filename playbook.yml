@@ -11,6 +11,9 @@
     - name: Install git on all hosts
       apt: pkg=git state=installed update_cache=true
 
+    - name: Install stress package on all hosts
+      apt: pkg=stress state=installed update_cache=true
+
     - name: Link nodejs to node
       shell: sudo ln -s /usr/bin/nodejs /usr/bin/node
 
