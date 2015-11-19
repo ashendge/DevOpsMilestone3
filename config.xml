@@ -1,0 +1,49 @@
+<project>
+<actions/>
+<description/>
+<keepDependencies>false</keepDependencies>
+<properties/>
+<scm class="hudson.plugins.git.GitSCM" plugin="git@2.4.0">
+<configVersion>2</configVersion>
+<userRemoteConfigs>
+<hudson.plugins.git.UserRemoteConfig>
+<name>repo_to_push</name>
+<url>https://github.com/anuragshendge/DevOpsMilestone3</url>
+</hudson.plugins.git.UserRemoteConfig>
+</userRemoteConfigs>
+<branches>
+<hudson.plugins.git.BranchSpec>
+<name>*/master</name>
+</hudson.plugins.git.BranchSpec>
+</branches>
+<doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+<submoduleCfg class="list"/>
+<extensions/>
+</scm>
+<canRoam>true</canRoam>
+<disabled>false</disabled>
+<blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+<blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+<triggers/>
+<concurrentBuild>false</concurrentBuild>
+<builders>
+<hudson.tasks.Shell>
+<command>npm install npm run ci-test</command>
+</hudson.tasks.Shell>
+</builders>
+<publishers>
+<org.jenkinsci.plugins.postbuildscript.PostBuildScript plugin="postbuildscript@0.17">
+<buildSteps>
+<hudson.tasks.Shell>
+<command>
+cd /home/ubuntu/DevOpsMilestone3 git pull origin master git push canary master
+</command>
+</hudson.tasks.Shell>
+</buildSteps>
+<scriptOnlyIfSuccess>true</scriptOnlyIfSuccess>
+<scriptOnlyIfFailure>false</scriptOnlyIfFailure>
+<markBuildUnstable>false</markBuildUnstable>
+</org.jenkinsci.plugins.postbuildscript.PostBuildScript>
+</publishers>
+<buildWrappers/>
+</project>
