@@ -10,7 +10,7 @@ function makeServer() {
 	var client = redis.createClient(6379, '52.34.15.28', {})
 	var child;
 	
-	///////////// WEB ROUTES
+///////////// WEB ROUTES
 	
 	// Add hook to make it easier to get all visited URLS.
 	app.use(function(req, res, next) 
