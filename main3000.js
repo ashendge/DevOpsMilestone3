@@ -69,7 +69,7 @@ function makeServer() {
 	});
 	
 	app.get('/', function(req, res) {
-		res.send('<h1>Serving production server on port 3000.</h1>');
+		res.send('<h1>NEW--->Serving production server on port 3000.</h1>');
 	});
 	
 	app.get('/set', function(req, res) {
