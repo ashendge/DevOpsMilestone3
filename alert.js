@@ -84,8 +84,7 @@ setInterval( function ()
 	} 
 
 	if (cpuLoad > 60) {
-			if (value == 0) {
-				//console.log("CPU Load too much. Sending alert");
+			
 		transporter.sendMail(mailOptions, function(error, info){
 	    if(error){
         	return console.log(error);
@@ -97,11 +96,7 @@ setInterval( function ()
 
 
 			//	client.set("cpuFlag", 1);
-			} else {
-				console.log("ALERT! Excess CPU Usage. Notified Ops Team");
-			}
-		
-		client.set("proxy_flag", 0);
+				
 	}
 
 }, 2000);
