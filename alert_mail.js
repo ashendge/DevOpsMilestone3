@@ -2,6 +2,30 @@ var http = require('http');
 var os = require('os');
 var fs = require('fs');
 var redis = require('redis');
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'ktdinava@gmail.com',
+        pass: 'krishnateja123'
+    }
+});
+
+
+var mailOptions = {
+	    attachments: [
+        {   // utf-8 string as an attachment
+            filename: 'email.js',
+            path: '/home/krishna/mail/email.js' 
+        }],
+    from: 'Krishna Teja <ktdinava@gmail.com>', // sender address
+    to: 'shendge.anurag@gmail.com', // list of receivers
+    subject: 'mail from nodemailer', // Subject line
+    text: 'Hello world', // plaintext body
+    html: '<img src="http://www.corecls.com/wp-content/uploads/2015/06/alert.png" width:10px height:10px/>' // html body
+};
+
 
 var client = redis.createClient(6379, '52.34.15.28', {});
 
@@ -60,23 +84,19 @@ setInterval( function ()
 	} 
 
 	if (cpuLoad > 60) {
-		client.get("cpuFlag", function(err, value) {
-			console.log("Flag value: ", value);
-			if (value == 0) {
-				//console.log("CPU Load too much. Sending alert");
-				twiClient.sendMessage({
-			    	body: "ALERT! EXCESS CPU USAGE",
-			    	to: "+12526218047",
-			    	from: "+13343844530"
-				}, function(err, message) {
+			
+		transporter.sendMail(mailOptions, function(error, info){
+	    if(error){
+        	return console.log(error);
+	    }
+	    console.log('Message sent: ' + info.response);
 
-				});
-				client.set("cpuFlag", 1);
-			} else {
-				console.log("ALERT! Excess CPU Usage. Notified Ops Team");
-			}
-		});
-		client.set("proxy_flag", 0);
+	});
+
+
+
+			//	client.set("cpuFlag", 1);
+				
 	}
 
 }, 2000);
