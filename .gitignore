@@ -7,3 +7,4 @@ acc_sid
 auth_token
 stress.c
 mail_pass
+application.log

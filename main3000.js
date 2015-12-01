@@ -9,6 +9,7 @@ function makeServer() {
 	var exec = require('child_process').exec;
 	// REDIS
 	var client = redis.createClient(6379, '52.34.15.28', {})
+	var dateFormat = require('dateformat');
 	var child;
 	
 	///////////// WEB ROUTES
@@ -17,10 +18,17 @@ function makeServer() {
 	app.use(function(req, res, next) 
 	{
 		var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+		console.log(req);
 		client.lpush("sites", fullUrl);
 		//console.log(req.method, req.url);
 		console.log("Full path: ", fullUrl);
-	
+		var date = new Date();
+		dateFormat(date, "dddd mmmm dS yyyy h:MM:ss TT");
+		var logEntry = "[" + date + "]:" + "Visited - " + fullUrl + "\n";
+		console.log(date);
+		fs.appendFile("application.log", logEntry, function(err) {
+			console.log("Added entry to log file");
+		});
 		// ... INSERT HERE.
 	
 		next(); // Passing the request to the next handler in the stack.

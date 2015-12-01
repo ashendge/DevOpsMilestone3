@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "dateformat": "^1.0.12",
     "express": "^4.12.3",
     "fs": "0.0.2",
     "http": "0.0.0",
