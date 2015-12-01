@@ -34,7 +34,7 @@ var mailOptions = {
             path: '/home/aneesh/DevOps/Milestone3/main3000.js' 
         }],
     from: 'DevOps DoNotReply <ktdinava@gmail.com>', // sender address
-    to: 'shendge.anurag@gmail.com', // list of receivers
+    to: 'aneeshkher@gmail.com', // list of receivers
     subject: 'mail from nodemailer', // Subject line
     text: 'Hello world', // plaintext body
     html: '<h3>ALERT! <font color="red">Excess CPU </font>Usage. Doctor monkey has been initiated. Please check /home/ubuntu/production/application.log logs for more details</h3>' // html body
@@ -66,7 +66,7 @@ setInterval( function ()
 	console.log("Memory: ", memLoad);
 	console.log("CPU: ", cpuLoad);
 
-	if (cpuLoad > 60) {
+	if (cpuLoad > 40) {
 		client.get("cpuFlag", function(err, value) {
 			if (value == 0) {
 				child = exec("perl fix.pl", function (error, stdout, stderr) {

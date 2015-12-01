@@ -17,7 +17,7 @@ var transporter = nodemailer.createTransport({
 
 var mailOptions = {
     from: 'DevOps DoNotReply <ktdinava@gmail.com>', // sender address
-    to: 'shendge.anurag@gmail.com', // list of receivers
+    to: 'aneeshkher@gmail.com', // list of receivers
     subject: 'mail from nodemailer', // Subject line
     text: 'Hello DevOps', // plaintext body
     html: '<h3>ALERT! <font color="red">File Size Exceeded </font>Usage. ' + 

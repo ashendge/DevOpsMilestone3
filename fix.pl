@@ -11,7 +11,6 @@ sub parse () {
 	my $total = @output;
 	foreach my $line (@output) {
 		if ($line =~ m/\s*PID\s+USER/) {
-			print "Parsed: $line\n";
 			my $i = 0;
 			for ($i = $count + 1; $i < $count + 6; $i++) {
 				my @tokens = split(/\s+/, $output[$i]);
@@ -31,10 +30,8 @@ sub parse () {
 					$process_id = $tokens[0];
 					$process_name = $tokens[11];
 				}
-				foreach my $tok (@tokens) {
-					#print "$tok\n";
-				}
-				if ($cpu_usage > 60) {
+				
+				if ($cpu_usage > 40) {
 					printf "TOO MUCH USAGE: $tokens[$1]\n";
 					system ("kill -9 $process_id");
 					open (LOGFILE, ">>$log_file");
@@ -43,7 +40,6 @@ sub parse () {
 					print LOGFILE "[$date]:Excess CPU Process killed - $process_name\n";
 					close (LOGFILE);
 				}
-				print "-----\n";
 			}
 		}
 		$count = $count + 1;
