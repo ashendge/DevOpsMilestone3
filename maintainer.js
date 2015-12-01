@@ -1,4 +1,5 @@
 var fs = require('fs');
+var nodemailer = require('nodemailer');
 
 var file = "application.log";
 
