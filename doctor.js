@@ -33,11 +33,11 @@ var mailOptions = {
             filename: 'email.js',
             path: '/home/aneesh/DevOps/Milestone3/main3000.js' 
         }],
-    from: 'Krishna Teja <ktdinava@gmail.com>', // sender address
+    from: 'DevOps DoNotReply <ktdinava@gmail.com>', // sender address
     to: 'shendge.anurag@gmail.com', // list of receivers
     subject: 'mail from nodemailer', // Subject line
     text: 'Hello world', // plaintext body
-    //html: '<img src="http://www.corecls.com/wp-content/uploads/2015/06/alert.png" width:10px height:10px/>' // html body
+    html: '<h3>ALERT! <font color="red">Excess CPU </font>Usage. Doctor monkey has been initiated. Please check /home/ubuntu/production/application.log logs for more details</h3>' // html body
 };
 function memoryLoad()
 {
