@@ -1,5 +1,8 @@
 var fs = require('fs');
 var nodemailer = require('nodemailer');
+var exec = require('child_process').exec;
+
+var child;
 
 var file = "application.log";
 
@@ -34,11 +37,22 @@ setInterval (function () {
         		return console.log(error);
 	    	}
 		});
-		fs.unlink(file, function (err) {
-			if (err) {
-				throw err;
-				console.log("Could not delete file");
-			}
+		client.get("logCounter", function(err, value) {
+			var command = "scp -i Aneesh-Linux-key.pem application.log " +
+				"ubuntu@172.31.37.30:/home/ubuntu/application.log." + 
+				value.toString();
+			client.set("logCounter", value + 1);
+			child = exec(command, function(error, stdout, stderr) {
+				if (error != null) {
+					console.log("Exec error: " + error);
+				}
+				fs.unlink(file, function (err) {
+					if (err) {
+						throw err;
+						console.log("Could not delete file");
+					}
+				});
+			});
 		});
 	}
 }, 2000);
