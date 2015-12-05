@@ -1,13 +1,15 @@
 var fs = require('fs');
 var nodemailer = require('nodemailer');
 var exec = require('child_process').exec;
+var redis = require('redis');
+
+var client = redis.createClient(6379, '52.34.15.28', {});
 
 var child;
-
 var file = "application.log";
 
 var password = fs.readFileSync('mail_pass', 'utf8').trim();
-var limit = 15000;
+var limit = 5000;
 
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -33,9 +35,9 @@ setInterval (function () {
 
 	if (fSize > limit) {
 		transporter.sendMail(mailOptions, function(error, info) {
-	    	if(error) {
-        		return console.log(error);
-	    	}
+			if(error) {
+				return console.log(error);
+			}
 		});
 		client.get("logCounter", function(err, value) {
 			var command = "scp -i Aneesh-Linux-key.pem application.log " +
@@ -51,6 +53,10 @@ setInterval (function () {
 						throw err;
 						console.log("Could not delete file");
 					}
+					
+					fs.appendFile(file, "", function(err) {
+						console.log("Creating new log file");
+					});
 				});
 			});
 		});
