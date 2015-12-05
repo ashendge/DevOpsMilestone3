@@ -43,7 +43,7 @@ setInterval (function () {
 			var command = "scp -i Aneesh-Linux-key.pem application.log " +
 				"ubuntu@172.31.37.30:/home/ubuntu/application.log." + 
 				value.toString();
-			client.set("logCounter", value + 1);
+			client.set("logCounter", (parseInt(value) + 1).toString());
 			child = exec(command, function(error, stdout, stderr) {
 				if (error != null) {
 					console.log("Exec error: " + error);
