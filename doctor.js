@@ -19,25 +19,25 @@ password.slice(0, password.length - 1);
 
 
 var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: 'ktdinava@gmail.com',
+	service: 'Gmail',
+	auth: {
+		user: 'ktdinava@gmail.com',
 		pass: password
-    }
+	}
 });
 
 
 var mailOptions = {
-	    attachments: [
-        {   // utf-8 string as an attachment
-            filename: 'email.js',
-            path: '/home/aneesh/DevOps/Milestone3/main3000.js' 
-        }],
-    from: 'DevOps DoNotReply <ktdinava@gmail.com>', // sender address
-    to: 'aneeshkher@gmail.com', // list of receivers
-    subject: 'mail from nodemailer', // Subject line
-    text: 'Hello world', // plaintext body
-    html: '<h3>ALERT! <font color="red">Excess CPU </font>Usage. Doctor monkey has been initiated. Please check /home/ubuntu/production/application.log logs for more details</h3>' // html body
+	attachments: [
+	{   // utf-8 string as an attachment
+		filename: 'email.js',
+		path: '/home/aneesh/DevOps/Milestone3/main3000.js' 
+	}],
+	from: 'DevOps DoNotReply <ktdinava@gmail.com>', // sender address
+	to: 'aneeshkher@gmail.com', // list of receivers
+	subject: 'mail from nodemailer', // Subject line
+	text: 'Hello world', // plaintext body
+	html: '<h3>ALERT! <font color="red">Excess CPU </font>Usage. Doctor monkey has been initiated. Please check /home/ubuntu/production/application.log logs for more details</h3>' // html body
 };
 function memoryLoad()
 {
@@ -74,10 +74,10 @@ setInterval( function ()
 						console.log("Exec error: " + error);
 					}
 				});
-				transporter.sendMail(mailOptions, function(error, info){
-	    			if(error){
-        				return console.log(error);
-	    			}
+				transporter.sendMail(mailOptions, function(error, info) {
+					if(error) {
+						return console.log(error);
+					}
 				});	
 				client.set("cpuFlag", 1);
 			} else {
